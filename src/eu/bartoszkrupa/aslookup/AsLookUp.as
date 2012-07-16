@@ -1,27 +1,31 @@
 package eu.bartoszkrupa.aslookup
 {
+	import eu.bartoszkrupa.aslookup.ds.NullPredicate;
 	import eu.bartoszkrupa.aslookup.ds.Tree;
 	import eu.bartoszkrupa.aslookup.visitors.TreeVisitorFunction;
 	
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
-
+	
 	public class AsLookUp
 	{
-		static public function walkFiltered(object:DisplayObjectContainer, interestedInClassesArray:Array):Tree {
+		static public function walkFiltered(object:DisplayObjectContainer, interestedInClassesArray:Array=null):Tree {
 			
 			var tree:Tree = toTree(object)
-			var treeVisitorFunction:TreeVisitorFunction = new TreeVisitorFunction(function(tree:Tree):void {
-				for each (var cls:Class in interestedInClassesArray) 
-				{
-					if(tree.node is cls){
-						return;
+			
+			if(interestedInClassesArray){
+				var treeVisitorFunction:TreeVisitorFunction = new TreeVisitorFunction(function(tree:Tree):void {
+					for each (var cls:Class in interestedInClassesArray) 
+					{
+						if(tree.node is cls){
+							return;
+						}
 					}
-				}
-				tree.node=null;
-			});
-			tree.visit(treeVisitorFunction)
-			return tree;
+					tree.node=null;
+				});
+				tree.visit(treeVisitorFunction)
+			}
+			return tree.filter(new NullPredicate());
 		}
 		
 		public static function toTree(object:DisplayObject):Tree

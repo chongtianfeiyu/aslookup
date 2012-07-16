@@ -1,3 +1,5 @@
+import eu.bartoszkrupa.aslookup.ds.Tree;
+
 package eu.bartoszkrupa.aslookup.ds
 {
 	import eu.bartoszkrupa.aslookup.visitors.TreeVisitor;
@@ -23,6 +25,21 @@ package eu.bartoszkrupa.aslookup.ds
 			}
 		}
 		
+		/**
+		 * Filters out tree nodes that does not safisfy predicate.
+		 * @param predicate
+		 * @return 
+		 * 
+		 */
+		public function filter(predicate:Predicate):Tree
+		{
+			if(predicate(this)){
+			} else {
+			}
+			for each (var child:Tree in children)  {		
+			}
+		}
+		
 		public function toString():String
 		{
 			return _toString()
@@ -38,5 +55,6 @@ package eu.bartoszkrupa.aslookup.ds
 			}
 			return _dumpString;
 		}
+		
 	}
 }
