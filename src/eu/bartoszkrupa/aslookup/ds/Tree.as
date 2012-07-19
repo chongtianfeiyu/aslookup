@@ -1,5 +1,3 @@
-import eu.bartoszkrupa.aslookup.ds.Tree;
-
 package eu.bartoszkrupa.aslookup.ds
 {
 	import eu.bartoszkrupa.aslookup.visitors.TreeVisitor;
@@ -33,11 +31,12 @@ package eu.bartoszkrupa.aslookup.ds
 		 */
 		public function filter(predicate:Predicate):Tree
 		{
-			if(predicate(this)){
+			if(predicate.invoke(this)){
 			} else {
 			}
 			for each (var child:Tree in children)  {		
 			}
+			return this
 		}
 		
 		public function toString():String

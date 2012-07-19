@@ -6,6 +6,7 @@ package eu.bartoszkrupa.aslookup
 	
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
+	import flash.geom.Point;
 	
 	public class AsLookUp
 	{
@@ -31,14 +32,39 @@ package eu.bartoszkrupa.aslookup
 		public static function toTree(object:DisplayObject):Tree
 		{
 			var tree:Tree = new Tree(object);
-			if(object is DisplayObjectContainer){
-				
+			if(object is DisplayObjectContainer) {
 				var doc:DisplayObjectContainer = object as DisplayObjectContainer;
 				for (var i:int = 0; i < doc.numChildren; i++) 
 				{
 					tree.children.push(toTree((doc.getChildAt(i))));
 				}
-				
+			} 
+			return tree;
+		}
+		
+		public static function treeUnderPoint(object:DisplayObjectContainer, point:Point, interestedInClassesArray:Array=null):Array
+		{
+			trace("treeUnderPoint - not finished yet!")
+			return object.getObjectsUnderPoint(point)
+		}
+		
+		/**
+		 *  
+		 * @param object Root container to start from
+		 * @param cls Class of the root and all children containers
+		 * @param numChildrenFunction function accepting `obj:cls` type and returning `int`
+		 * @param getChildAtFunction function accepting (`obj:cls`,`int`) and returning object
+		 * 
+		 */
+		public static function toTreeAny(object:*, cls:Class, numChildrenFunction:Function, getChildAtFunction:Function):Tree
+		{
+			var tree:Tree = new Tree(object);
+			if(object is cls) {
+				var doc:* = object
+				for (var i:int = 0; i < numChildrenFunction(doc); i++) 
+				{
+					tree.children.push(toTreeAny(getChildAtFunction(doc,i),cls,numChildrenFunction,getChildAtFunction));
+				}
 			} 
 			return tree;
 		}
