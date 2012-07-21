@@ -10,6 +10,14 @@ package eu.bartoszkrupa.aslookup
 	
 	public class AsLookUp
 	{
+		/**
+		 * Returns tree representing given structure including only elements 
+		 * that classes match any class in @interestedInClassesArray
+		 * 
+		 * @param object
+		 * @param interestedInClassesArray
+		 * @return 
+		 */
 		static public function walkFiltered(object:DisplayObjectContainer, interestedInClassesArray:Array=null):Tree {
 			
 			var tree:Tree = toTree(object)
@@ -56,14 +64,20 @@ package eu.bartoszkrupa.aslookup
 		 * @param getChildAtFunction function accepting (`obj:cls`,`int`) and returning object
 		 * 
 		 */
-		public static function toTreeAny(object:*, cls:Class, numChildrenFunction:Function, getChildAtFunction:Function):Tree
+		public static function toTreeAny(object:*, 
+										 cls:Class, 
+										 numChildrenFunction:Function, 
+										 getChildAtFunction:Function):Tree
 		{
 			var tree:Tree = new Tree(object);
 			if(object is cls) {
 				var doc:* = object
 				for (var i:int = 0; i < numChildrenFunction(doc); i++) 
 				{
-					tree.children.push(toTreeAny(getChildAtFunction(doc,i),cls,numChildrenFunction,getChildAtFunction));
+					tree.children.push(toTreeAny(getChildAtFunction(doc,i),
+									   cls,
+									   numChildrenFunction,
+									   getChildAtFunction));
 				}
 			} 
 			return tree;
